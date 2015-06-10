@@ -373,6 +373,25 @@ public class AllMethods {
 
 		// Crias CSV com o nome do método, quantidade de paramentros
 		it = allMethodsList.iterator();
+
+		// cabeçalho
+
+		PrintOutput.write(" QUALIFIED_NAME,", "csv");
+
+		PrintOutput.write(" QTD_DEPENDECIES,", "csv");
+
+		PrintOutput.write(" NANE,", "csv");
+
+		PrintOutput.write(" QTD_PARAMETERS,", "csv");
+
+		PrintOutput.write(" NUMBER_OF_OCURRENCES,", "csv");
+
+		PrintOutput.write(" IS_CONSTRUCTOR,", "csv");
+
+		PrintOutput.write(" IS_MAIN,", "csv");
+
+		PrintOutput.write("\n", "csv");
+
 		while (it.hasNext()) {
 			MethodJMove m = it.next();
 
@@ -388,9 +407,11 @@ public class AllMethods {
 
 			PrintOutput.write(iMethod.getNumberOfParameters() + ",", "csv");
 
-			PrintOutput.write(iMethod.getSignature() + ",", "csv");
-
 			PrintOutput.write(iMethod.getOccurrenceCount() + ",", "csv");
+
+			PrintOutput.write(iMethod.isConstructor() + ",", "csv");
+
+			PrintOutput.write(iMethod.isMainMethod() + ",", "csv");
 
 			PrintOutput.write("\n", "csv");
 		}
