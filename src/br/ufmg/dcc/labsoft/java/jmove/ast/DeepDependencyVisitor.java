@@ -71,7 +71,9 @@ import br.ufmg.dcc.labsoft.java.jmove.dependencies.DeclareReturnDependency;
 import br.ufmg.dcc.labsoft.java.jmove.dependencies.Dependency;
 import br.ufmg.dcc.labsoft.java.jmove.dependencies.SimpleNameDependency;
 import br.ufmg.dcc.labsoft.java.jmove.dependencies.ThrowDependency;
+import br.ufmg.dcc.labsoft.java.jmove.methods.CompilationUnitCacheJmove;
 import br.ufmg.dcc.labsoft.java.jmove.methods.MethodObjects;
+import br.ufmg.dcc.labsoft.java.jmove.suggestion.MethodHasAssigment;
 import br.ufmg.dcc.labsoft.java.jmove.utils.PrintOutput;
 
 public class DeepDependencyVisitor extends ASTVisitor {
@@ -109,6 +111,7 @@ public class DeepDependencyVisitor extends ASTVisitor {
 
 		this.fullClass = (CompilationUnit) parser.createAST(null); // parse
 		this.fullClass.accept(this);
+		CompilationUnitCacheJmove.getInstance().insertMapping(unit, fullClass);
 		// System.out.println("name " + className);
 	}
 
@@ -121,6 +124,7 @@ public class DeepDependencyVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(TypeDeclaration node) {
+		CompilationUnitCacheJmove.getInstance().insertMapping(getUnit(), node);
 		return true;
 	}
 
@@ -757,6 +761,7 @@ public class DeepDependencyVisitor extends ASTVisitor {
 
 				if (!localVariableSet.contains(leftSide)) {
 					IMethod iMethod = getIMethod(md);
+					MethodHasAssigment.getInstance().insertMapping(iMethod);
 					// System.out.println(this.getClassName()+"."+md.getName()
 					// + " foi inserido por causa de " + node);
 					PrintOutput.write(this.getClassName() + "." + md.getName()

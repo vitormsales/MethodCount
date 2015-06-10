@@ -51,4 +51,8 @@ public class MethodObjects {
 		return allLocalDeclaration.get(iMethod);
 	}
 
+	public AbstractMap<IMethod, MethodDeclaration> getAllMethodDeclarations() {
+		return allDeclaration;
+	}
+
 }

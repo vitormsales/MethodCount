@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JMoveBeta
-Bundle-SymbolicName: MethodCount;singleton:=true
+Bundle-SymbolicName: JMoveBeta;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: jmovebeta.Activator
 Require-Bundle: org.eclipse.ui,
