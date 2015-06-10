@@ -49,9 +49,11 @@ public class AllMethods {
 	private Map<Integer, IMethod> iMethodMapping;
 	private Set<Integer> moveIspossible;
 	private IProgressMonitor monitor;
+	private String activeProjectName;
 
 	public AllMethods(List<DeepDependencyVisitor> allDeepDependency,
-			IProgressMonitor monitor) throws JavaModelException {
+			IProgressMonitor monitor, String activeProjectName)
+			throws JavaModelException {
 		// TODO Auto-generated method stub
 
 		this.numberOfExcluded = 0;
@@ -59,6 +61,7 @@ public class AllMethods {
 		this.iMethodMapping = new HashMap<Integer, IMethod>();
 		this.moveIspossible = new HashSet<Integer>();
 		this.monitor = monitor;
+		this.activeProjectName = activeProjectName;
 
 		createMethodsDependeciesList(allDeepDependency);
 
@@ -376,44 +379,44 @@ public class AllMethods {
 
 		// cabeçalho
 
-		PrintOutput.write(" QUALIFIED_NAME,", "csv");
+		PrintOutput.write(" QUALIFIED_NAME,", activeProjectName+".csv");
 
-		PrintOutput.write(" QTD_DEPENDECIES,", "csv");
+		PrintOutput.write(" QTD_DEPENDECIES,", activeProjectName+".csv");
 
-		PrintOutput.write(" NANE,", "csv");
+		PrintOutput.write(" NANE,", activeProjectName+".csv");
 
-		PrintOutput.write(" QTD_PARAMETERS,", "csv");
+		PrintOutput.write(" QTD_PARAMETERS,", activeProjectName+".csv");
 
-		PrintOutput.write(" NUMBER_OF_OCURRENCES,", "csv");
+		PrintOutput.write(" NUMBER_OF_OCURRENCES,", activeProjectName+".csv");
 
-		PrintOutput.write(" IS_CONSTRUCTOR,", "csv");
+		PrintOutput.write(" IS_CONSTRUCTOR,", activeProjectName+".csv");
 
-		PrintOutput.write(" IS_MAIN,", "csv");
+		PrintOutput.write(" IS_MAIN,", activeProjectName+".csv");
 
-		PrintOutput.write("\n", "csv");
+		PrintOutput.write("\n", activeProjectName+".csv");
 
 		while (it.hasNext()) {
 			MethodJMove m = it.next();
 
 			PrintOutput.write(
 					AllEntitiesMapping.getInstance().getByID(m.getNameID())
-							+ ",", "csv");
+							+ ",", activeProjectName+".csv");
 
-			PrintOutput.write(m.getMethodsDependencies().size() + ",", "csv");
+			PrintOutput.write(m.getMethodsDependencies().size() + ",", activeProjectName+".csv");
 
 			IMethod iMethod = this.getIMethod(m);
 
-			PrintOutput.write(iMethod.getElementName() + ",", "csv");
+			PrintOutput.write(iMethod.getElementName() + ",", activeProjectName+".csv");
 
-			PrintOutput.write(iMethod.getNumberOfParameters() + ",", "csv");
+			PrintOutput.write(iMethod.getNumberOfParameters() + ",", activeProjectName+".csv");
 
-			PrintOutput.write(iMethod.getOccurrenceCount() + ",", "csv");
+			PrintOutput.write(iMethod.getOccurrenceCount() + ",", activeProjectName+".csv");
 
-			PrintOutput.write(iMethod.isConstructor() + ",", "csv");
+			PrintOutput.write(iMethod.isConstructor() + ",", activeProjectName+".csv");
 
-			PrintOutput.write(iMethod.isMainMethod() + ",", "csv");
+			PrintOutput.write(iMethod.isMainMethod() + ",", activeProjectName+".csv");
 
-			PrintOutput.write("\n", "csv");
+			PrintOutput.write("\n", activeProjectName + ".csv");
 		}
 
 	}

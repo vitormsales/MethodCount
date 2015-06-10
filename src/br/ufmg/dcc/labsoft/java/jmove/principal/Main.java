@@ -110,7 +110,7 @@ public class Main {
 						throws InvocationTargetException, InterruptedException {
 
 					try {
-						allMethods = new AllMethods(allDeepDependency, monitor);
+						allMethods = new AllMethods(allDeepDependency, monitor, activeProjectName);
 					} catch (JavaModelException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
