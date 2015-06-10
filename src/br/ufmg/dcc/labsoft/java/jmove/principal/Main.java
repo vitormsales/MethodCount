@@ -19,26 +19,18 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
 
-import br.ufmg.dcc.labsoft.java.jmove.approach.CalculateMediaApproach;
 import br.ufmg.dcc.labsoft.java.jmove.ast.DeepDependencyVisitor;
-import br.ufmg.dcc.labsoft.java.jmove.basic.CoefficientsResolution.CoefficientStrategy;
-import br.ufmg.dcc.labsoft.java.jmove.methods.AllMethods;
-import br.ufmg.dcc.labsoft.java.jmove.methods.Clazz;
 import br.ufmg.dcc.labsoft.java.jmove.util.DCLUtil;
-import br.ufmg.dcc.labsoft.java.jmove.utils.CandidateMap;
-import br.ufmg.dcc.labsoft.java.jmove.utils.InternalClass;
 
 public class Main {
 
-	CandidateMap map;
 	IProject project;
 	IJavaProject javaProject;
 	List<DeepDependencyVisitor> allDeepDependency;
 	int numberOfClass = 0;
-	AllMethods allMethods;
 	String activeProjectName;
 
-	public CandidateMap execute(IJavaProject iProject) {
+	public void execute(IJavaProject iProject) {
 		try {
 
 			allDeepDependency = new ArrayList<DeepDependencyVisitor>();
@@ -68,8 +60,6 @@ public class Main {
 								continue;
 							}
 
-							InternalClass.getInstance().putNewInternalClass(
-									className);
 
 							IFile resource = DCLUtil.getFileFromClassName(
 									javaProject, className);
@@ -80,11 +70,10 @@ public class Main {
 									+ unit.getElementName());
 							DeepDependencyVisitor deepDependency = new DeepDependencyVisitor(
 									unit);
-							
+
 							allDeepDependency.add(deepDependency);
 							numberOfClass++;
 
-							Clazz.getInstance().insertMapping(unit);
 							monitor.worked(1);
 
 							if (monitor != null && monitor.isCanceled()) {
@@ -103,49 +92,8 @@ public class Main {
 				}
 			});
 
-			wb = PlatformUI.getWorkbench();
-			ps = wb.getProgressService();
-			ps.busyCursorWhile(new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor)
-						throws InvocationTargetException, InterruptedException {
-
-					try {
-						allMethods = new AllMethods(allDeepDependency, monitor);
-					} catch (JavaModelException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-
-			// tornando visivel para o coletor de lixo
-			allDeepDependency = null;
-
-			wb = PlatformUI.getWorkbench();
-			ps = wb.getProgressService();
-			ps.busyCursorWhile(new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor)
-						throws InvocationTargetException, InterruptedException {
-
-					CalculateMediaApproach mediaApproach = new CalculateMediaApproach(
-							allMethods, activeProjectName, numberOfClass,
-							monitor);
-					
-					map = mediaApproach
-							.calculate(CoefficientStrategy.Jaccard);
-				
-//					mediaApproach.calculateForAllStrategies();
-
-				}
-			});
-
-		} catch (Exception t) {
-			t.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-
-		System.out.println("retornar map valor= " + map);
-		return map;
-
 	}
 }
