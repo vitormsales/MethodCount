@@ -379,42 +379,59 @@ public class AllMethods {
 
 		// cabeçalho
 
-		PrintOutput.write(" QUALIFIED_NAME,", activeProjectName+".csv");
+		String escape = "\"";
+		String endEscape = "\",";
 
-		PrintOutput.write(" QTD_DEPENDECIES,", activeProjectName+".csv");
+		PrintOutput.write(escape + " QUALIFIED_NAME" + endEscape,
+				activeProjectName + ".csv");
 
-		PrintOutput.write(" NANE,", activeProjectName+".csv");
+		PrintOutput.write(escape + " QTD_DEPENDECIES" + endEscape,
+				activeProjectName + ".csv");
 
-		PrintOutput.write(" QTD_PARAMETERS,", activeProjectName+".csv");
+		PrintOutput.write(escape + " NANE" + endEscape, activeProjectName
+				+ ".csv");
 
-		PrintOutput.write(" NUMBER_OF_OCURRENCES,", activeProjectName+".csv");
+		PrintOutput.write(escape + " QTD_PARAMETERS" + endEscape,
+				activeProjectName + ".csv");
 
-		PrintOutput.write(" IS_CONSTRUCTOR,", activeProjectName+".csv");
+		PrintOutput.write(escape + " NUMBER_OF_OCURRENCES" + endEscape,
+				activeProjectName + ".csv");
 
-		PrintOutput.write(" IS_MAIN,", activeProjectName+".csv");
+		PrintOutput.write(escape + " IS_CONSTRUCTOR" + endEscape,
+				activeProjectName + ".csv");
 
-		PrintOutput.write("\n", activeProjectName+".csv");
+		PrintOutput.write(escape + " IS_MAIN" + endEscape, activeProjectName
+				+ ".csv");
+
+		PrintOutput.write("\n", activeProjectName + ".csv");
 
 		while (it.hasNext()) {
 			MethodJMove m = it.next();
 
-			PrintOutput.write(
-					AllEntitiesMapping.getInstance().getByID(m.getNameID())
-							+ ",", activeProjectName+".csv");
+			PrintOutput.write(escape
+					+ AllEntitiesMapping.getInstance().getByID(m.getNameID())
+					+ endEscape, activeProjectName + ".csv");
 
-			PrintOutput.write(m.getMethodsDependencies().size() + ",", activeProjectName+".csv");
+			PrintOutput.write(escape + m.getMethodsDependencies().size()
+					+ endEscape, activeProjectName + ".csv");
 
 			IMethod iMethod = this.getIMethod(m);
 
-			PrintOutput.write(iMethod.getElementName() + ",", activeProjectName+".csv");
+			PrintOutput.write(escape + iMethod.getElementName() + endEscape,
+					activeProjectName + ".csv");
 
-			PrintOutput.write(iMethod.getNumberOfParameters() + ",", activeProjectName+".csv");
+			PrintOutput.write(escape + iMethod.getNumberOfParameters()
+					+ endEscape, activeProjectName + ".csv");
 
-			PrintOutput.write(iMethod.getOccurrenceCount() + ",", activeProjectName+".csv");
+			PrintOutput.write(
+					escape + iMethod.getOccurrenceCount() + endEscape,
+					activeProjectName + ".csv");
 
-			PrintOutput.write(iMethod.isConstructor() + ",", activeProjectName+".csv");
+			PrintOutput.write(escape + iMethod.isConstructor() + endEscape,
+					activeProjectName + ".csv");
 
-			PrintOutput.write(iMethod.isMainMethod() + ",", activeProjectName+".csv");
+			PrintOutput.write(escape + iMethod.isMainMethod() + endEscape,
+					activeProjectName + ".csv");
 
 			PrintOutput.write("\n", activeProjectName + ".csv");
 		}
