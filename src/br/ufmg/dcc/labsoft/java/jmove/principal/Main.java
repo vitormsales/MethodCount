@@ -121,24 +121,6 @@ public class Main {
 			// tornando visivel para o coletor de lixo
 			allDeepDependency = null;
 
-			wb = PlatformUI.getWorkbench();
-			ps = wb.getProgressService();
-			ps.busyCursorWhile(new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor)
-						throws InvocationTargetException, InterruptedException {
-
-					CalculateMediaApproach mediaApproach = new CalculateMediaApproach(
-							allMethods, activeProjectName, numberOfClass,
-							monitor);
-					
-					map = mediaApproach
-							.calculate(CoefficientStrategy.Jaccard);
-				
-//					mediaApproach.calculateForAllStrategies();
-
-				}
-			});
-
 		} catch (Exception t) {
 			t.printStackTrace();
 		}
