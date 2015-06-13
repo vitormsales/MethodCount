@@ -171,10 +171,10 @@ public class CalculateMediaApproach {
 
 			// #########begin conta somente aqueles que algum move é possivel
 			int source = sourceMethod.getNameID();
-			if (!allMethods.getMoveIspossible().contains(source)) {
-				continue;
-
-			}
+//			if (!allMethods.getMoveIspossible().contains(source)) {
+//				continue;
+//
+//			}
 			// ########end;
 
 			allClassSimilarity.clear();

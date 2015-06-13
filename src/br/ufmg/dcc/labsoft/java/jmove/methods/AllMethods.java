@@ -2,27 +2,15 @@ package br.ufmg.dcc.labsoft.java.jmove.methods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.Block;
-import org.eclipse.jdt.core.dom.ExpressionStatement;
-import org.eclipse.jdt.core.dom.ForStatement;
-import org.eclipse.jdt.core.dom.IfStatement;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.ReturnStatement;
-import org.eclipse.jdt.core.dom.SwitchCase;
-import org.eclipse.jdt.core.dom.SwitchStatement;
-import org.eclipse.jdt.core.dom.TryStatement;
 
 import br.ufmg.dcc.labsoft.java.jmove.ast.DeepDependencyVisitor;
 import br.ufmg.dcc.labsoft.java.jmove.basic.AllEntitiesMapping;
@@ -36,18 +24,14 @@ import br.ufmg.dcc.labsoft.java.jmove.dependencies.DeclareReturnDependency;
 import br.ufmg.dcc.labsoft.java.jmove.dependencies.Dependency;
 import br.ufmg.dcc.labsoft.java.jmove.dependencies.SimpleNameDependency;
 import br.ufmg.dcc.labsoft.java.jmove.dependencies.ThrowDependency;
-import br.ufmg.dcc.labsoft.java.jmove.util.DCLUtil;
-import br.ufmg.dcc.labsoft.java.jmove.utils.ClazzUtil;
-import br.ufmg.dcc.labsoft.java.jmove.utils.MoveMethod;
-import br.ufmg.dcc.labsoft.java.jmove.utils.PrintOutput;
 import br.ufmg.dcc.labsoft.java.jmove.utils.JMoveSignatures;
+import br.ufmg.dcc.labsoft.java.jmove.utils.PrintOutput;
 
 public class AllMethods {
 
 	private List<MethodJMove> allMethodsList;
 	private int numberOfExcluded;
 	private Map<Integer, IMethod> iMethodMapping;
-	private Set<Integer> moveIspossible;
 	private IProgressMonitor monitor;
 	private String activeProjectName;
 
@@ -59,7 +43,6 @@ public class AllMethods {
 		this.numberOfExcluded = 0;
 		this.allMethodsList = new ArrayList<MethodJMove>();
 		this.iMethodMapping = new HashMap<Integer, IMethod>();
-		this.moveIspossible = new HashSet<Integer>();
 		this.monitor = monitor;
 		this.activeProjectName = activeProjectName;
 
@@ -379,8 +362,8 @@ public class AllMethods {
 
 		// cabeçalho
 
-		String escape = "\"";
-		String endEscape = "\",";
+		String escape = "";
+		String endEscape = ";";
 
 		PrintOutput.write(escape + " QUALIFIED_NAME" + endEscape,
 				activeProjectName + ".csv");
@@ -403,37 +386,46 @@ public class AllMethods {
 		PrintOutput.write(escape + " IS_MAIN" + endEscape, activeProjectName
 				+ ".csv");
 
+		PrintOutput.write(escape + " SYSTEM", activeProjectName + ".csv");
+
 		PrintOutput.write("\n", activeProjectName + ".csv");
 
 		while (it.hasNext()) {
 			MethodJMove m = it.next();
-
-			PrintOutput.write(escape
-					+ AllEntitiesMapping.getInstance().getByID(m.getNameID())
-					+ endEscape, activeProjectName + ".csv");
-
-			PrintOutput.write(escape + m.getMethodsDependencies().size()
-					+ endEscape, activeProjectName + ".csv");
-
 			IMethod iMethod = this.getIMethod(m);
+			if (iMethod != null) {
+				PrintOutput.write(endEscape, activeProjectName + ".csv");
 
-			PrintOutput.write(escape + iMethod.getElementName() + endEscape,
-					activeProjectName + ".csv");
+				PrintOutput.write(
+						escape
+								+ AllEntitiesMapping.getInstance().getByID(
+										m.getNameID()) + endEscape,
+						activeProjectName + ".csv");
 
-			PrintOutput.write(escape + iMethod.getNumberOfParameters()
-					+ endEscape, activeProjectName + ".csv");
+				PrintOutput.write(escape + m.getMethodsDependencies().size()
+						+ endEscape, activeProjectName + ".csv");
 
-			PrintOutput.write(
-					escape + iMethod.getOccurrenceCount() + endEscape,
-					activeProjectName + ".csv");
+				PrintOutput.write(
+						escape + iMethod.getElementName() + endEscape,
+						activeProjectName + ".csv");
 
-			PrintOutput.write(escape + iMethod.isConstructor() + endEscape,
-					activeProjectName + ".csv");
+				PrintOutput.write(escape + iMethod.getNumberOfParameters()
+						+ endEscape, activeProjectName + ".csv");
 
-			PrintOutput.write(escape + iMethod.isMainMethod() + endEscape,
-					activeProjectName + ".csv");
+				PrintOutput.write(escape + iMethod.getOccurrenceCount()
+						+ endEscape, activeProjectName + ".csv");
 
-			PrintOutput.write("\n", activeProjectName + ".csv");
+				PrintOutput.write(escape + (iMethod.isConstructor() ? 1 : 0)
+						+ endEscape, activeProjectName + ".csv");
+
+				PrintOutput.write(escape + (iMethod.isMainMethod() ? 1 : 0)
+						+ endEscape, activeProjectName + ".csv");
+
+				PrintOutput.write(escape + activeProjectName.substring(0, 5),
+						activeProjectName + ".csv");
+
+				PrintOutput.write("\n", activeProjectName + ".csv");
+			}
 		}
 
 	}
@@ -471,11 +463,6 @@ public class AllMethods {
 
 			// List<String> moveReachable = MoveMethod
 			// .getpossibleRefactoring(getIMethod(method2));
-			if (this.getIMethod(method2) != null
-					&& MoveMethod.IsRefactoringPossible(this
-							.getIMethod(method2))) {
-				moveIspossible.add(methodId);
-			}
 
 			allMethodsList.add(method2);
 			method2.setNewMethodsDependencies(dependeciesList);
@@ -517,10 +504,6 @@ public class AllMethods {
 
 	private void setNumberOfExcluded(int numberOfExcluded) {
 		this.numberOfExcluded = numberOfExcluded;
-	}
-
-	public Set<Integer> getMoveIspossible() {
-		return moveIspossible;
 	}
 
 	public void excludeDependeciesLessThan(int Numdepedencies) {

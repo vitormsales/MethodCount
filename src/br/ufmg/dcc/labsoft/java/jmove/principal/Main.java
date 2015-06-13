@@ -19,9 +19,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
 
-import br.ufmg.dcc.labsoft.java.jmove.approach.CalculateMediaApproach;
 import br.ufmg.dcc.labsoft.java.jmove.ast.DeepDependencyVisitor;
-import br.ufmg.dcc.labsoft.java.jmove.basic.CoefficientsResolution.CoefficientStrategy;
 import br.ufmg.dcc.labsoft.java.jmove.methods.AllMethods;
 import br.ufmg.dcc.labsoft.java.jmove.methods.Clazz;
 import br.ufmg.dcc.labsoft.java.jmove.util.DCLUtil;

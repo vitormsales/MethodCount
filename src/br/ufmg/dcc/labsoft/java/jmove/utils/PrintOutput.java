@@ -28,6 +28,7 @@ public class PrintOutput {
 
 		if (outuput != null) {
 			outuput.print(text);
+			outuput.flush();
 		}
 	}
 
